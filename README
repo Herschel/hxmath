@@ -1,0 +1,8 @@
+# hxmath - A math library for Haxe v3 #
+
+hxmath hopes to support:
+
+ * Arbitrary-precision arithmetic (BigInt and BigFloat)
+ * Complex numbers
+ * Rational numbers
+
