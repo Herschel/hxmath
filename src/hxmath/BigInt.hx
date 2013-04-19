@@ -4,19 +4,18 @@ package hxmath;
 abstract BigInt(_BigInt) {
 	inline function new(n : _BigInt) { this = n; }
 
-	@:from static public inline function ofInt(n : Int) : BigInt {
+	@:from
+	public static inline function ofInt(n : Int) : BigInt
 		return new BigInt( _BigInt.ofInt(n) );
-	}
 
-	public inline function toInt() : Int { return this.toInt(); }
-
-	static public inline function ofFloat(n : Float) : BigInt {
+	public static inline function ofFloat(n : Float) : BigInt
 		return new BigInt( _BigInt.ofFloat(n) );
-	}
 
-	public inline function toFloat() : Float {
+	public inline function toInt() : Int
+		return this.toInt();
+
+	public inline function toFloat() : Float
 		return this.toFloat();
-	}
 }
 
 /** Implementation of BigInt */
@@ -24,21 +23,20 @@ private class _BigInt {
 	static inline var BITS_PER_CHUNK : Int = 31;
 	static inline var CHUNK_MASK : Int = (1<<BITS_PER_CHUNK) - 1;
 
-	private var _chunks : Array<Int>;
-	private var _signum : Int;
+	var _chunks : Array<Int>;
+	var _signum : Int;
 
-	private function new() {
+	function new() {
 		_chunks = new Array();
 		_signum = 0;
 	}
 
 	// INSTANTIATION
-	static public inline function alloc() : _BigInt {
+	public static inline function alloc() : _BigInt {
 		return new _BigInt();
 	}
 
-	// CONVERSION
-	static public function ofInt(n : Int) : _BigInt {
+	public static function ofInt(n : Int) : _BigInt {
 		var bn = alloc();
 		if (n < 0) {
 			bn._signum = -1;
@@ -57,6 +55,12 @@ private class _BigInt {
 		return bn;
 	}
 
+	public static function ofFloat(n : Float) : _BigInt {
+		// TODO
+		return alloc();
+	}
+
+	// CONVERSION
 	public function toInt() : Int {
 		var n = 0;
 		var i = _chunks.length - 1;
@@ -66,11 +70,6 @@ private class _BigInt {
 			i--;
 		}
 		return n * _signum;
-	}
-
-	static public function ofFloat(n : Float) : _BigInt {
-		// TODO
-		return alloc();
 	}
 
 	public function toFloat() : Float {
