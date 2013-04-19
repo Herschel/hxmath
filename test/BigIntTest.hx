@@ -47,4 +47,27 @@ class BigIntTest
 		n = BigInt.ofFloat(1.2345e-50);
 		Assert.areEqual(0.0, n.toFloat());
 	}
+
+	@Test
+	public function testStringCasts() {
+		var n : BigInt;
+
+		n = BigInt.ofString("0");
+		Assert.areEqual("0", n.toString());
+
+		n = BigInt.ofString("20");
+		Assert.areEqual("20", n.toString());
+
+		n = BigInt.ofString("-3");
+		Assert.areEqual("-3", n.toString());
+
+		n = BigInt.ofString("12345678901234567890");
+		Assert.areEqual("12345678901234567890", n.toString());
+
+		n = BigInt.ofString("   099999999999999999  ");
+		Assert.areEqual("99999999999999999", n.toString());
+
+		n = BigInt.ofString("   -099999999999999999  ");
+		Assert.areEqual("-99999999999999999", n.toString());
+	}
 }

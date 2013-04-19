@@ -11,11 +11,17 @@ abstract BigInt(_BigInt) {
 	public static inline function ofFloat(n : Float) : BigInt
 		return new BigInt( _BigInt.ofFloat(n) );
 
+	public static inline function ofString(n : String) : BigInt
+		return new BigInt( _BigInt.ofString(n) );
+
 	public inline function toInt() : Int
 		return this.toInt();
 
 	public inline function toFloat() : Float
 		return this.toFloat();
+
+	public inline function toString() : String
+		return this.toString();
 }
 
 /** Implementation of BigInt */
@@ -75,6 +81,11 @@ private class _BigInt {
 		return bn;
 	}
 
+	public static function ofString(n : String) : _BigInt {
+		// TODO
+		return alloc();
+	}
+
 	// CONVERSION
 	public function toInt() : Int {
 		var n = 0;
@@ -96,5 +107,10 @@ private class _BigInt {
 			i--;
 		}
 		return n * _signum;
+	}
+
+	public function toString() : String {
+		// TODO
+		return "0";
 	}
 }
