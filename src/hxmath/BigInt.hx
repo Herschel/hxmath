@@ -21,7 +21,8 @@ abstract BigInt(_BigInt) {
 /** Implementation of BigInt */
 private class _BigInt {
 	static inline var BITS_PER_CHUNK : Int = 31;
-	static inline var CHUNK_MASK : Int = (1<<BITS_PER_CHUNK) - 1;
+	static inline var CHUNK_MASK : Int = (1 << BITS_PER_CHUNK) - 1;
+	static inline var CHUNK_MAX_FLOAT : Float = (1 << (BITS_PER_CHUNK-1)) * 2.0;
 
 	var _chunks : Array<Int>;
 	var _signum : Int;
@@ -56,8 +57,22 @@ private class _BigInt {
 	}
 
 	public static function ofFloat(n : Float) : _BigInt {
-		// TODO
-		return alloc();
+		var bn = alloc();
+
+		if (n < 0) {
+			bn._signum = -1;
+			n = -n;
+		} else if (n > 0) {
+			bn._signum = 1;
+		}
+
+		n = Math.ffloor(n);
+		while(n != 0) {
+			bn._chunks.push( Std.int(n % CHUNK_MAX_FLOAT) );
+			n = Math.ffloor( n / CHUNK_MAX_FLOAT );
+		}
+
+		return bn;
 	}
 
 	// CONVERSION
@@ -73,7 +88,13 @@ private class _BigInt {
 	}
 
 	public function toFloat() : Float {
-		// TODO
-		return 0.0;
+		var n = 0.0;
+		var i = _chunks.length - 1;
+		while(i >= 0) {
+			n *= CHUNK_MAX_FLOAT;
+			n += _chunks[i];
+			i--;
+		}
+		return n * _signum;
 	}
 }
