@@ -1,7 +1,6 @@
-package;
+package hxmath;
 
 import massive.munit.Assert;
-import hxmath.BigInt;
 
 class BigIntTest 
 {

@@ -1,6 +1,6 @@
 import massive.munit.TestSuite;
 
-import BigIntTest;
+import hxmath.BigIntTest;
 import hxmath.ComplexTest;
 
 /**
@@ -15,7 +15,7 @@ class TestSuite extends massive.munit.TestSuite
 	{
 		super();
 
-		add(BigIntTest);
+		add(hxmath.BigIntTest);
 		add(hxmath.ComplexTest);
 	}
 }
