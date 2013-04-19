@@ -76,7 +76,14 @@ class BigIntTest
 		var n : BigInt;
 		var m : BigInt;
 
-		n = 1; m = 1;
-		Assert.areEqual(n, m);
+		// we can not use areEqual here, because it casts to Dynamic
+		// and loses the type info necessary to call the proper == method
+		m = 1; n = 1;
+		Assert.isTrue(m == n);
+		Assert.isFalse(m != n);
+
+		m = 1; n = 2;
+		Assert.isFalse(m == n);
+		Assert.isTrue(m != n);
 	}
 }
