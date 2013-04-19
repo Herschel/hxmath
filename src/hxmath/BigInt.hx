@@ -9,6 +9,14 @@ abstract BigInt(_BigInt) {
 	}
 
 	public inline function toInt() : Int { return this.toInt(); }
+
+	static public inline function ofFloat(n : Float) : BigInt {
+		return new BigInt( _BigInt.ofFloat(n) );
+	}
+
+	public inline function toFloat() : Float {
+		return this.toFloat();
+	}
 }
 
 /** Implementation of BigInt */
@@ -58,5 +66,15 @@ private class _BigInt {
 			i--;
 		}
 		return n * _signum;
+	}
+
+	static public function ofFloat(n : Float) : _BigInt {
+		// TODO
+		return alloc();
+	}
+
+	public function toFloat() : Float {
+		// TODO
+		return 0.0;
 	}
 }
