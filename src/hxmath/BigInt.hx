@@ -102,6 +102,14 @@ abstract BigInt(_BigInt) {
 	@:op(A != B)
 	public static inline function neq(lhs : BigInt, rhs : BigInt) : Bool
 		return !eq(lhs, rhs);
+
+	@:op(A == B) @:commutative
+	public static inline function eqInt(lhs : BigInt, rhs : Int) : Bool
+		return lhs == ofInt(rhs);
+
+	@:op(A != B) @:commutative
+	public static inline function neqInt(lhs : BigInt, rhs : Int) : Bool
+		return lhs != ofInt(rhs);
 }
 
 private typedef _BigInt = {
