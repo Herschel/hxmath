@@ -88,15 +88,20 @@ abstract BigInt(_BigInt) {
 	// BOOLEAN COMPARISONS
 	@:op(A == B)
 	public static function eq(lhs : BigInt, rhs : BigInt) : Bool {
-		// TODO
-		return false;
+		// the _BigInt representation is guaranteed to be unique,
+		// so we can just compare the guts for equality
+		if(lhs.signum != rhs.signum) return false;
+		if(lhs.chunks.length != rhs.chunks.length) return false;
+		for(i in 0...lhs.chunks.length) {
+			if(lhs.chunks[i] != rhs.chunks[i]) return false;
+		}
+
+		return true;
 	}
 
 	@:op(A != B)
-	public static function neq(lhs : BigInt, rhs : BigInt) : Bool {
-		// TODO
-		return false;
-	}
+	public static inline function neq(lhs : BigInt, rhs : BigInt) : Bool
+		return !eq(lhs, rhs);
 }
 
 private typedef _BigInt = {
