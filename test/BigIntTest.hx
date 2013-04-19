@@ -78,11 +78,17 @@ class BigIntTest
 
 		// we can not use areEqual here, because it casts to Dynamic
 		// and loses the type info necessary to call the proper == method
-		m = 1; n = 1;
+		m = 1;
+		Assert.isTrue(m == 1);
+		Assert.isTrue(1 == m);
+		Assert.isFalse(m != 1);
+		Assert.isFalse(1 != m);
+
+		n = 1;
 		Assert.isTrue(m == n);
 		Assert.isFalse(m != n);
 
-		m = 1; n = 2;
+		n = 2;
 		Assert.isFalse(m == n);
 		Assert.isTrue(m != n);
 	}
