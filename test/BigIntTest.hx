@@ -70,4 +70,13 @@ class BigIntTest
 		n = BigInt.ofString("   -099999999999999999  ");
 		Assert.areEqual("-99999999999999999", n.toString());
 	}
+
+	@Test
+	public function testEquality() {
+		var n : BigInt;
+		var m : BigInt;
+
+		n = 1; m = 1;
+		Assert.areEqual(n, m);
+	}
 }

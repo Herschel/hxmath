@@ -84,6 +84,19 @@ abstract BigInt(_BigInt) {
 		// TODO
 		return "0";
 	}
+
+	// BOOLEAN COMPARISONS
+	@:op(A == B)
+	public static function eq(lhs : BigInt, rhs : BigInt) : Bool {
+		// TODO
+		return false;
+	}
+
+	@:op(A != B)
+	public static function neq(lhs : BigInt, rhs : BigInt) : Bool {
+		// TODO
+		return false;
+	}
 }
 
 private typedef _BigInt = {
