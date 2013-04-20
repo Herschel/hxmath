@@ -50,6 +50,37 @@ abstract Rational(_Rational) {
 			this.den = -this.den;
 		}
 	}
+
+	// BOOLEAN COMPARISONS
+	public static function eq(lhs : Rational, rhs : Rational) : Bool {
+		// TODO
+		return false;
+	}
+
+	public static function ne(lhs : Rational, rhs : Rational) : Bool {
+		// TODO
+		return false;
+	}
+
+	public static function gt(lhs : Rational, rhs : Rational) : Bool {
+		// TODO
+		return false;
+	}
+
+	public static function gte(lhs : Rational, rhs : Rational) : Bool {
+		// TODO
+		return false;
+	}
+
+	public static function lt(lhs : Rational, rhs : Rational) : Bool {
+		// TODO
+		return false;
+	}
+
+	public static function lte(lhs : Rational, rhs : Rational) : Bool {
+		// TODO
+		return false;
+	}
 }
 
 private typedef _Rational = {
