@@ -11,6 +11,8 @@ abstract Matrix(_Matrix) {
 		this = alloc(rows, cols);
 
 	static function alloc(rows : Int, cols : Int) : _Matrix {
+		if (rows <= 0 || cols <= 0) throw Error.InvalidMatrixSize;
+
 		var a = new Array< Array<Float> >();
 		for(i in 0...rows) {
 			a[i] = new Array<Float>();
