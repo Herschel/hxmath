@@ -14,10 +14,35 @@ abstract Rational(_Rational) {
 		this = alloc();
 		this.num = num;
 		this.den = den;
+		reduce(this);
 	}
 
 	static inline function alloc() : _Rational
 		return {num: 0, den: 0};
+
+	function reduce() {
+		if(this.num == 0) {
+			this.den = 1;
+			return;
+		}
+
+		var a = this.num;
+		var b = this.den;
+		while(b != 0) {
+			var temp = b;
+			b = a % temp;
+			a = temp;
+		}
+		if(a < 0) a = -a;
+
+		this.num = Std.int(this.num / a);
+		this.den = Std.int(this.den / a);
+
+		if(this.den < 0) {
+			this.num = -this.num;
+			this.den = -this.den;
+		}
+	}
 }
 
 private typedef _Rational = {
