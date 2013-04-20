@@ -51,6 +51,27 @@ abstract Rational(_Rational) {
 		}
 	}
 
+	// BASIC ARITHMETIC
+	@:op(A + B)
+	public static function add(lhs : Rational, rhs : Rational) : Rational
+		return new Rational(); // TODO
+
+	@:op(A - B)
+	public static function sub(lhs : Rational, rhs : Rational) : Rational
+		return new Rational(); // TODO
+
+	@:op(A * B)
+	public static function mul(lhs : Rational, rhs : Rational) : Rational
+		return new Rational(); // TODO
+
+	@:op(A / B)
+	public static function div(lhs : Rational, rhs : Rational) : Rational
+		return new Rational(); // TODO
+
+	@:op(-A)
+	public static function neg(lhs : Rational) : Rational
+		return new Rational(); // TODO
+
 	// BOOLEAN COMPARISONS
 	@:op(A == B)
 	public static function eq(lhs : Rational, rhs : Rational) : Bool {
