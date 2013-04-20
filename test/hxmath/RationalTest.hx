@@ -156,6 +156,12 @@ class RationalTest {
 		Assert.isTrue(a-b == c);
 		Assert.isTrue(a-c == b);
 		Assert.isTrue(a == b+c);
+
+		var t = a;
+		a -= b;
+		Assert.isTrue(a == c);
+		a += b;
+		Assert.isTrue(a == t);
 	}
 
 	@Test
@@ -193,6 +199,12 @@ class RationalTest {
 		Assert.isTrue(a/b == c);
 		Assert.isTrue(a == c*b);
 		Assert.isTrue(a/c == b);
+
+		var t = a;
+		a /= b;
+		Assert.isTrue(a == c);
+		a *= b;
+		Assert.isTrue(a == t);
 	}
 
 	@Test
