@@ -1,6 +1,12 @@
 package hxmath;
 
 abstract Matrix(_Matrix) {
+	public var numRows(get, never) : Int;
+	inline function get_numRows() return this.length;
+
+	public var numCols(get, never) : Int;
+	inline function get_numCols() return this[0].length;
+
 	public function new(rows : Int, cols : Int) : Matrix
 		this = alloc(rows, cols);
 
