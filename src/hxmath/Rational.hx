@@ -101,6 +101,31 @@ abstract Rational(_Rational) {
 	@:op(A >= B)
 	public static function gte(lhs : Rational, rhs : Rational) : Bool
 		return (lhs.num * rhs.den) >= (rhs.num * lhs.den);
+
+	// INTEGER BOOLEAN COMPARISONS
+	@:op(A == B) @:commutative
+	public static function eqInt(lhs : Rational, rhs : Int) : Bool
+		return lhs.num == lhs.den * rhs;
+
+	@:op(A != B) @:commutative
+	public static function neInt(lhs : Rational, rhs : Int) : Bool
+		return lhs.num != lhs.den * rhs;
+
+	@:op(A < B) @:commutative
+	public static function ltInt(lhs : Rational, rhs : Int) : Bool
+		return lhs.num < lhs.den * rhs;
+
+	@:op(A <= B) @:commutative
+	public static function lteInt(lhs : Rational, rhs : Int) : Bool
+		return lhs.num <= lhs.den * rhs;
+
+	@:op(A > B) @:commutative
+	public static function gtInt(lhs : Rational, rhs : Int) : Bool
+		return lhs.num > lhs.den * rhs;
+
+	@:op(A >= B) @:commutative
+	public static function gteInt(lhs : Rational, rhs : Int) : Bool
+		return lhs.num >= lhs.den * rhs;
 }
 
 private typedef _Rational = {

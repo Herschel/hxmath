@@ -81,6 +81,17 @@ class RationalTest {
 		Assert.isFalse(a==b); Assert.isTrue(a!=b);
 		Assert.isTrue(a<b); Assert.isTrue(a<=b);
 		Assert.isFalse(a>b); Assert.isFalse(a>=b);
+
+		// Integer comaprisons
+		a = new Rational(200, 2);
+		Assert.isTrue(a == 100); Assert.isFalse(a != 100);
+		Assert.isFalse(a < 100); Assert.isTrue(a <= 100);
+		Assert.isFalse(a > 100); Assert.isTrue(a >= 100);
+
+		a = new Rational(33, -3);
+		Assert.isFalse(a == 0); Assert.isTrue(a != 0);
+		Assert.isTrue(a < 0); Assert.isTrue(a <= 0);
+		Assert.isFalse(a > 0); Assert.isFalse(a >= 0);
 	}
 
 	@Test
