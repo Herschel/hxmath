@@ -39,6 +39,51 @@ class RationalTest {
 	}
 
 	@Test
+	public function testComparisons() {
+		var a = new Rational(1, 2);
+		var b = new Rational(1, 2);
+		Assert.isTrue(a==b); Assert.isFalse(a!=b);
+		Assert.isFalse(a<b); Assert.isTrue(a<=b);
+		Assert.isFalse(a>b); Assert.isTrue(a>=b);
+
+		a = new Rational(2, 4);
+		b = new Rational(8, 16);
+		Assert.isTrue(a==b); Assert.isFalse(a!=b);
+		Assert.isFalse(a<b); Assert.isTrue(a<=b);
+		Assert.isFalse(a>b); Assert.isTrue(a>=b);
+
+		a = new Rational(-30, -100);
+		b = new Rational(3, 10);
+		Assert.isTrue(a==b); Assert.isFalse(a!=b);
+		Assert.isFalse(a<b); Assert.isTrue(a<=b);
+		Assert.isFalse(a>b); Assert.isTrue(a>=b);
+
+		a = new Rational(0, -1);
+		b = new Rational(0, 1344);
+		Assert.isTrue(a==b); Assert.isFalse(a!=b);
+		Assert.isFalse(a<b); Assert.isTrue(a<=b);
+		Assert.isFalse(a>b); Assert.isTrue(a>=b);
+
+		a = new Rational(2, 3);
+		b = new Rational(-2, 3);
+		Assert.isFalse(a==b); Assert.isTrue(a!=b);
+		Assert.isFalse(a<b); Assert.isFalse(a<=b);
+		Assert.isTrue(a>b); Assert.isTrue(a>=b);
+
+		a = new Rational(-16, 8);
+		b = new Rational(2, 1);
+		Assert.isFalse(a==b); Assert.isTrue(a!=b);
+		Assert.isTrue(a<b); Assert.isTrue(a<=b);
+		Assert.isFalse(a>b); Assert.isFalse(a>=b);
+
+		a = new Rational(-999, 1);
+		b = new Rational(1234, -2);
+		Assert.isFalse(a==b); Assert.isTrue(a!=b);
+		Assert.isTrue(a<b); Assert.isTrue(a<=b);
+		Assert.isFalse(a>b); Assert.isFalse(a>=b);
+	}
+
+	@Test
 	public function testFloatCasts() {
 		var r : Rational = new Rational(1, 2);
 		Assert.areEqual(1/2, r.toFloat());
