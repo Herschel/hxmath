@@ -29,7 +29,7 @@ class RationalTest {
 		Assert.areEqual(r.num, 1);
 		Assert.areEqual(r.den, 2);
 
-		r = new Rational(4325, -8018550);
+		r = new Rational(4325, -801855);
 		Assert.areEqual(r.num, -5);
 		Assert.areEqual(r.den, 927);		
 	}
