@@ -21,4 +21,23 @@ class MatrixTest {
 		try m = new Matrix(3, -1) catch(e : Error) threw = true;
 		Assert.isTrue(threw);
 	}
+
+	@Test
+	public function testComparisonOps() {
+		var a = new Matrix(3, 3);
+		Assert.isTrue(a == a);
+		Assert.isFalse(a != a);
+
+		var b = new Matrix(3, 3);
+		Assert.isTrue(a == b);
+		Assert.isTrue(b == a);
+		Assert.isFalse(a != b);
+		Assert.isFalse(b != a);
+
+		a = new Matrix(4, 1);
+		Assert.isFalse(a == b);
+		Assert.isFalse(b == a);
+		Assert.isTrue(a != b);
+		Assert.isTrue(b != a);
+	}
 }
