@@ -52,35 +52,34 @@ abstract Rational(_Rational) {
 	}
 
 	// BOOLEAN COMPARISONS
+	@:op(A == B)
 	public static function eq(lhs : Rational, rhs : Rational) : Bool {
-		// TODO
-		return false;
+		// Rational is guaranteed to be unique after reduce
+		// so simply compare parts
+		return lhs.num == rhs.num && lhs.den == rhs.den;
 	}
 
-	public static function ne(lhs : Rational, rhs : Rational) : Bool {
-		// TODO
-		return false;
-	}
+	@:op(A != B)
+	public static inline function ne(lhs : Rational, rhs : Rational) : Bool
+		return lhs.num != rhs.num || lhs.den != rhs.den;
 
-	public static function gt(lhs : Rational, rhs : Rational) : Bool {
-		// TODO
-		return false;
-	}
-
-	public static function gte(lhs : Rational, rhs : Rational) : Bool {
-		// TODO
-		return false;
-	}
-
+	@:op(A < B)
 	public static function lt(lhs : Rational, rhs : Rational) : Bool {
-		// TODO
-		return false;
+		// denominator is always positive, so no need to worry about sign flippage
+		return (lhs.num * rhs.den) < (rhs.num * lhs.den);
 	}
 
-	public static function lte(lhs : Rational, rhs : Rational) : Bool {
-		// TODO
-		return false;
-	}
+	@:op(A <= B)
+	public static function lte(lhs : Rational, rhs : Rational) : Bool
+		return (lhs.num * rhs.den) <= (rhs.num * lhs.den);
+
+	@:op(A > B)
+	public static function gt(lhs : Rational, rhs : Rational) : Bool
+		return (lhs.num * rhs.den) > (rhs.num * lhs.den);
+
+	@:op(A >= B)
+	public static function gte(lhs : Rational, rhs : Rational) : Bool
+		return (lhs.num * rhs.den) >= (rhs.num * lhs.den);
 }
 
 private typedef _Rational = {
