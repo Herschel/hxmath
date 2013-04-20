@@ -54,23 +54,23 @@ abstract Rational(_Rational) {
 	// BASIC ARITHMETIC
 	@:op(A + B)
 	public static function add(lhs : Rational, rhs : Rational) : Rational
-		return new Rational(); // TODO
+		return new Rational(lhs.num * rhs.den + rhs.num * lhs.den, lhs.den * rhs.den);
 
 	@:op(A - B)
 	public static function sub(lhs : Rational, rhs : Rational) : Rational
-		return new Rational(); // TODO
+		return new Rational(lhs.num * rhs.den - rhs.num * lhs.den, lhs.den * rhs.den);
 
 	@:op(A * B)
 	public static function mul(lhs : Rational, rhs : Rational) : Rational
-		return new Rational(); // TODO
+		return new Rational(lhs.num * rhs.num, lhs.den * rhs.den);
 
 	@:op(A / B)
 	public static function div(lhs : Rational, rhs : Rational) : Rational
-		return new Rational(); // TODO
+		return new Rational(lhs.num * rhs.den, lhs.den * rhs.num);
 
 	@:op(-A)
 	public static function neg(lhs : Rational) : Rational
-		return new Rational(); // TODO
+		return new Rational(-lhs.num, lhs.den);
 
 	// BOOLEAN COMPARISONS
 	@:op(A == B)
