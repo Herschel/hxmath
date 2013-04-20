@@ -20,6 +20,13 @@ abstract Rational(_Rational) {
 	static inline function alloc() : _Rational
 		return {num: 0, den: 0};
 
+	// CONVERSIONS
+	public function toFloat() : Float
+		return this.num / this.den;
+
+	public function toString() : String
+		return '${this.num} / ${this.den}';
+
 	function reduce() {
 		if(this.num == 0) {
 			this.den = 1;
