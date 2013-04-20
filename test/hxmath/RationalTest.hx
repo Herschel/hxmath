@@ -118,4 +118,95 @@ class RationalTest {
 		r = new Rational(-55, -1234);
 		Assert.areEqual("55 / 1234", r.toString());
 	}
+
+	@Test
+	public function testAdditionAndSubtraction() {
+		var a = new Rational(-100, 1000);
+		var b = new Rational(0, -123123);
+		Assert.isTrue(a+b == a);
+		Assert.isTrue(b+a == a);
+		Assert.isTrue(a-b == a);
+		Assert.isTrue(a-a == b);
+		Assert.isTrue(b+b == b);
+
+		var a = new Rational(1, 2);
+		var b = new Rational(2, 4);
+		var c = new Rational(1, 1);
+		Assert.isTrue(a+b == c);
+		Assert.isTrue(c-b == a);
+		Assert.isTrue(c-a == b);
+
+		a = new Rational(-1, 2);
+		b = new Rational(3, 4);
+		c = new Rational(1, 4);
+		Assert.isTrue(a+b == c);
+		Assert.isTrue(c-b == a);
+		Assert.isTrue(c-a == b);
+
+		a = new Rational(410, -321);
+		b = new Rational(-32, 400);
+		c = new Rational(-10892, 8025);
+		Assert.isTrue(a+b == c);
+		Assert.isTrue(c-b == a);
+		Assert.isTrue(c-a == b);
+
+		a = new Rational(44, 11);
+		b = new Rational(55, 22);
+		c = new Rational(-6, -4);
+		Assert.isTrue(a-b == c);
+		Assert.isTrue(a-c == b);
+		Assert.isTrue(a == b+c);
+	}
+
+	@Test
+	public function testMultiplicationAndDivison() {
+		var a = new Rational(1234, 5678);
+		var b = new Rational(1, 1);
+		Assert.isTrue(a*b == a);
+		Assert.isTrue(b*a == a);
+		Assert.isTrue(a/b == a);
+
+		a = new Rational(50, -1232);
+		b = new Rational(0, 144);
+		Assert.isTrue(a*b == b);
+		Assert.isTrue(b*a == b);
+		Assert.isTrue(b/a == b);
+
+		a = new Rational(1, 2);
+		b = new Rational(3, 5);
+		var c = new Rational(3, 10);
+		Assert.isTrue(a*b == c);
+		Assert.isTrue(b*a == c);
+		Assert.isTrue(c/a == b);
+		Assert.isTrue(c/b == a);
+
+		a = new Rational(-2, 55);
+		b = new Rational(3, -30);
+		c = new Rational(6, 1650);
+		Assert.isTrue(a*b == c);
+		Assert.isTrue(c/b == a);
+		Assert.isTrue(c/a == b);
+
+		a = new Rational(12, 2);
+		b = new Rational(-2, 3);
+		c = new Rational(36, -4);
+		Assert.isTrue(a/b == c);
+		Assert.isTrue(a == c*b);
+		Assert.isTrue(a/c == b);
+	}
+
+	@Test
+	public function testNegation() {
+		var a = new Rational(1, 2);
+		var b = new Rational(-444, 888);
+		var z = new Rational(0, 3);
+		Assert.isTrue(-a == b);
+		Assert.isTrue(a == -b);
+		Assert.isTrue(-a == -a);
+		Assert.isTrue(a == -(-a));
+
+		Assert.isTrue(a+(-a) == z);
+		Assert.isTrue(z-a == -a);
+		Assert.isTrue(-z == z);
+	}
 }
