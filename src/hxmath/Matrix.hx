@@ -20,6 +20,15 @@ abstract Matrix(_Matrix) {
 		}
 		return a;
 	}
+
+	// BOOLEAN OPERATORS
+	@:op(A == B)
+	public static function eq(lhs : Matrix, rhs : Matrix) : Bool
+		return false; // TODO
+
+	@:op(A != B)
+	public static function neq(lhs : Matrix, rhs : Matrix) : Bool
+		return false; // TODO
 	
 }
 
