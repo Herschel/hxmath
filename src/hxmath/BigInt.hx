@@ -6,16 +6,17 @@ abstract BigInt(_BigInt) {
 	static inline var CHUNK_MASK : Int = (1 << BITS_PER_CHUNK) - 1;
 	static inline var CHUNK_MAX_FLOAT : Float = (1 << (BITS_PER_CHUNK-1)) * 2.0;
 
-	inline function new(n : _BigInt) { this = n; }
+	inline function new() : BigInt
+		this = alloc();
 
 	// INSTANTIATION
-	private static inline function alloc() : BigInt {
-		return new BigInt( {chunks: new Array(), signum: 0} );
+	private static inline function alloc() : _BigInt {
+		return {chunks: new Array(), signum: 0};
 	}
 
 	@:from
 	public static function ofInt(n : Int) : BigInt {
-		var bn = alloc();
+		var bn = new BigInt();
 		if (n < 0) {
 			bn.signum = -1;
 			n = -n;
@@ -34,7 +35,7 @@ abstract BigInt(_BigInt) {
 	}
 
 	public static function ofFloat(n : Float) : BigInt {
-		var bn = alloc();
+		var bn = new BigInt();
 
 		if (n < 0) {
 			bn.signum = -1;
@@ -54,7 +55,7 @@ abstract BigInt(_BigInt) {
 
 	public static function ofString(n : String) : BigInt {
 		// TODO
-		return alloc();
+		return new BigInt();
 	}
 
 	// CONVERSION
