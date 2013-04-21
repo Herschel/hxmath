@@ -111,6 +111,27 @@ abstract BigInt(_BigInt) {
 	@:op(A != B) @:commutative
 	public static inline function neqInt(lhs : BigInt, rhs : Int) : Bool
 		return lhs != ofInt(rhs);
+
+	// BASIC ARITHMETIC
+	@:op(A + B)
+	public static inline function add(lhs : BigInt, rhs : BigInt) : BigInt
+		return new BigInt(); // TODO
+
+	@:op(A - B)
+	public static inline function sub(lhs : BigInt, rhs : BigInt) : BigInt
+		return new BigInt(); // TODO
+
+	@:op(A * B)
+	public static inline function mul(lhs : BigInt, rhs : BigInt) : BigInt
+		return new BigInt(); // TODO
+
+	@:op(A / B)
+	public static inline function div(lhs : BigInt, rhs : BigInt) : BigInt
+		return new BigInt(); // TODO
+
+	@:op(-A)
+	public static inline function neg(n : BigInt) : BigInt
+		return new BigInt(); // TODO
 }
 
 private typedef _BigInt = {
