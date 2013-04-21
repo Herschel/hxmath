@@ -133,4 +133,27 @@ class BigIntTest
 		s = BigInt.ofString("99999999999999999999999999999999999999999999");
 		Assert.isTrue(m+n == s);
 	}
+
+	@Test
+	public function testNegation() {
+		var m : BigInt;
+		var n : BigInt;
+
+		// -0 == 0
+		n = 0;
+		Assert.isTrue(-n == n);
+
+		n = 1;
+		Assert.isTrue(-n == -1);
+		Assert.isTrue(-(-n) == n);
+
+		n = -1234;
+		Assert.isTrue(-n == 1234);
+		Assert.isTrue(-(-n) == n);
+
+		m = BigInt.ofString("192395858359234934684359234");
+		n = BigInt.ofString("-192395858359234934684359234");
+		Assert.isTrue(-m == n);
+		Assert.isTrue(m == -n);
+	}
 }
