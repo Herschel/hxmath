@@ -162,6 +162,36 @@ class BigIntTest
 	}
 
 	@Test
+	public function testMultiplicaion() {
+		var a : BigInt;
+		var b : BigInt;
+		var m : BigInt;
+
+		a = 12347; b = 0;
+		Assert.isTrue(a*b == b);
+		Assert.isTrue(b*a == b);
+
+		a = -99999; b = 1;
+		Assert.isTrue(a*b == a);
+		Assert.isTrue(b*a == a);
+
+		a = 1235; b = 44; m = 54340;
+		Assert.isTrue(a*b == m);
+		Assert.isTrue(b*a == m);
+
+		a = -11; b = 9; m = -99;
+		Assert.isTrue(a*b == m);
+
+		a = 55; b = -2; m = -110;
+		Assert.isTrue(a*b == m);
+
+		a = BigInt.ofString("111111111111111111111111111111111111111");
+		b = BigInt.ofString("-333333333333333333333");
+		m = BigInt.ofString("-37037037037037037036999999999999999999962962962962962962963");
+		Assert.isTrue(a*b == m);
+	}
+
+	@Test
 	public function testDivision() {
 		var u : BigInt;
 		var v : BigInt;
