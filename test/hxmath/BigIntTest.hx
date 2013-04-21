@@ -91,4 +91,46 @@ class BigIntTest
 		Assert.isFalse(m == n);
 		Assert.isTrue(m != n);
 	}
+
+	@Test
+	public function testAddition() {
+		var m : BigInt;
+		var n : BigInt;
+		var s : BigInt;
+
+		// identity
+		m = 123; n = 0;
+		Assert.isTrue(m+n == m);
+		Assert.isTrue(n+m == m);
+
+		// commutativity
+		m = 123; n = 343; s = 466;
+		Assert.isTrue(m+n == s);
+		Assert.isTrue(n+m == s);
+
+		// associativity
+		m = -234356; n = 355321; s = 120965;
+		Assert.isTrue(m+n == s);
+
+		// lots of big sums
+		m = 0x7fffffff;
+		n = m;
+		s = BigInt.ofString("4294967294");
+		Assert.isTrue(m+n == s);
+
+		m = BigInt.ofString("11111111111111111111110111111111111111111111111111");
+		n = m;
+		s = BigInt.ofString("22222222222222222222220222222222222222222222222222");
+		Assert.isTrue(m+n == s);
+
+		m = BigInt.ofString("99499494949383948405");
+		n = BigInt.ofString("-472435789789045237084578078029457809342597808204538970");
+		s = BigInt.ofString("-472435789789045237084578078029457709843102858820590565");
+		Assert.isTrue(m+n == s);
+
+		m = BigInt.ofString("-1");
+		n = BigInt.ofString("100000000000000000000000000000000000000000000");
+		s = BigInt.ofString("99999999999999999999999999999999999999999999");
+		Assert.isTrue(m+n == s);
+	}
 }
