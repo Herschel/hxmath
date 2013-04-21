@@ -2,7 +2,9 @@
 
 hxmath is a WIP Haxe 3 library that hopes to support:
 
- * Arbitrary-precision arithmetic (BigInt and BigFloat)
- * Complex numbers
+ * Arbitrary-precision integers (BigInt)
  * Rational numbers
- * Vectors and matrices
+ * Complex numbers
+ * Vectors
+ * Matrices
+ * Quaternions
