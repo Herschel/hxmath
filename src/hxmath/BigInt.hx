@@ -114,12 +114,81 @@ abstract BigInt(_BigInt) {
 
 	// BASIC ARITHMETIC
 	@:op(A + B)
-	public static inline function add(lhs : BigInt, rhs : BigInt) : BigInt
-		return new BigInt(); // TODO
+	public static function add(lhs : BigInt, rhs : BigInt) : BigInt {
+		if (lhs.signum == 0) return rhs;
+		if (rhs.signum == 0) return lhs;
+		if (_compareMagnitude(lhs, rhs) == 1) {
+			var temp = lhs;
+			lhs = rhs;
+			rhs = temp;
+		}
+		if (lhs.signum == rhs.signum) return _add(lhs, rhs);
+		else return _sub(lhs, rhs);
+	}
 
 	@:op(A - B)
-	public static inline function sub(lhs : BigInt, rhs : BigInt) : BigInt
-		return new BigInt(); // TODO
+	public static function sub(lhs : BigInt, rhs : BigInt) : BigInt {
+		rhs.signum = -rhs.signum;
+		var out = add(lhs, rhs);
+		rhs.signum = -rhs.signum;
+		return out;
+	}
+
+	static function _compareMagnitude(a : BigInt, b : BigInt) : Int {
+		if (a.chunks.length > b.chunks.length) return -1;
+		if (a.chunks.length < b.chunks.length) return 1;
+		var i = a.chunks.length;
+		while (i >= 0) {
+			if(a.chunks[i] > b.chunks[i]) return -1;
+			if(a.chunks[i] < b.chunks[i]) return 1;
+			i--;
+		}
+		return 0;
+	}
+
+	static function _add(big : BigInt, small : BigInt) : BigInt {
+		var out = new BigInt();
+
+		var carry = 0;
+		for(i in 0...big.chunks.length) {
+			var sum = big.chunks[i] + small.chunks[i] + carry;
+			carry = sum >>> BITS_PER_CHUNK;
+			sum &= CHUNK_MASK;
+			out.chunks.push(sum);
+		}
+		for(i in big.chunks.length...small.chunks.length) {
+			var sum = big.chunks[i] + carry;
+			carry = sum >>> BITS_PER_CHUNK;
+			sum &= CHUNK_MASK;
+			out.chunks.push(sum);
+		}
+		if (carry == 1) out.chunks.push(1);
+		out.signum = big.signum;
+
+		return out;
+	}
+
+	static function _sub(big : BigInt, small : BigInt) : BigInt {
+		var out = new BigInt();
+
+		var borrow = 0;
+		for(i in 0...big.chunks.length) {
+			var diff = big.chunks[i] - small.chunks[i] - borrow;
+			borrow = diff >>> BITS_PER_CHUNK;
+			diff &= CHUNK_MASK;
+			out.chunks.push(diff);
+		}
+		for(i in big.chunks.length...small.chunks.length) {
+			var diff = big.chunks[i] - borrow;
+			borrow = diff >>> BITS_PER_CHUNK;
+			diff &= CHUNK_MASK;
+			out.chunks.push(diff);
+		}
+		if (borrow == 1) out.chunks.push(1);
+		out.signum = big.signum;
+
+		return out;
+	}
 
 	@:op(A * B)
 	public static inline function mul(lhs : BigInt, rhs : BigInt) : BigInt
@@ -130,8 +199,12 @@ abstract BigInt(_BigInt) {
 		return new BigInt(); // TODO
 
 	@:op(-A)
-	public static inline function neg(n : BigInt) : BigInt
-		return new BigInt(); // TODO
+	public static inline function neg(n : BigInt) : BigInt {
+		var out : BigInt = new BigInt();
+		out.chunks = n.chunks;
+		out.signum = -n.signum;
+		return out;
+	}
 }
 
 private typedef _BigInt = {

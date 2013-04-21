@@ -96,6 +96,7 @@ class BigIntTest
 	public function testAddition() {
 		var m : BigInt;
 		var n : BigInt;
+		var o : BigInt;
 		var s : BigInt;
 
 		// identity
@@ -109,7 +110,10 @@ class BigIntTest
 		Assert.isTrue(n+m == s);
 
 		// associativity
-		m = -234356; n = 355321; s = 120965;
+		m = -234356; n = 355321; o = 234;
+		Assert.isTrue((m+n)+o == m+(n+o));
+
+		m = 1; n = -9999; s = -9998;
 		Assert.isTrue(m+n == s);
 
 		// lots of big sums
