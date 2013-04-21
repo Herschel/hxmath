@@ -2,7 +2,7 @@ package hxmath;
 
 // BigInt interface
 abstract BigInt(_BigInt) {
-	static inline var BITS_PER_CHUNK : Int = 31;
+	static inline var BITS_PER_CHUNK : Int = 30;
 	static inline var CHUNK_MASK : Int = (1 << BITS_PER_CHUNK) - 1;
 	static inline var CHUNK_MAX_FLOAT : Float = (1 << (BITS_PER_CHUNK-1)) * 2.0;
 

@@ -160,4 +160,17 @@ class BigIntTest
 		Assert.isTrue(-m == n);
 		Assert.isTrue(m == -n);
 	}
+
+	@Test
+	public function testDivision() {
+		var u : BigInt;
+		var v : BigInt;
+		var q : BigInt;
+		var r : BigInt;
+
+		u = 20;
+		v = 1;
+		Assert.isTrue(u/v == u);
+		Assert.isTrue(u/u == v);
+	}
 }
