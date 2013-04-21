@@ -127,12 +127,8 @@ abstract BigInt(_BigInt) {
 	}
 
 	@:op(A - B)
-	public static function sub(lhs : BigInt, rhs : BigInt) : BigInt {
-		rhs.signum = -rhs.signum;
-		var out = add(lhs, rhs);
-		rhs.signum = -rhs.signum;
-		return out;
-	}
+	public static function sub(lhs : BigInt, rhs : BigInt) : BigInt
+		return new BigInt(); // TODO
 
 	static function _compareMagnitude(a : BigInt, b : BigInt) : Int {
 		if (a.chunks.length > b.chunks.length) return -1;
