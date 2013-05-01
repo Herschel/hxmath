@@ -10,11 +10,14 @@ abstract Rational(_Rational) {
 	inline function get_den() return this.den;
 	inline function set_den(n) return this.den = n;
 
+	var impl(get, never) : _Rational;
+	inline function get_impl() return this;
+
 	public function new(num : Int = 0, den : Int = 1) : Rational {
 		this = alloc();
 		this.num = num;
 		this.den = den;
-		reduce(this);
+		reduce();
 	}
 
 	static inline function alloc() : _Rational
@@ -54,78 +57,90 @@ abstract Rational(_Rational) {
 	// BASIC ARITHMETIC
 	@:op(A + B)
 	public static function add(lhs : Rational, rhs : Rational) : Rational
-		return new Rational(lhs.num * rhs.den + rhs.num * lhs.den, lhs.den * rhs.den);
+		return new Rational(
+			lhs.impl.num * rhs.impl.den + rhs.impl.num * lhs.impl.den,
+			lhs.impl.den * rhs.impl.den
+		);
 
 	@:op(A - B)
 	public static function sub(lhs : Rational, rhs : Rational) : Rational
-		return new Rational(lhs.num * rhs.den - rhs.num * lhs.den, lhs.den * rhs.den);
+		return new Rational(
+			lhs.impl.num * rhs.impl.den - rhs.impl.num * lhs.impl.den,
+			lhs.impl.den * rhs.impl.den
+		);
 
 	@:op(A * B)
 	public static function mul(lhs : Rational, rhs : Rational) : Rational
-		return new Rational(lhs.num * rhs.num, lhs.den * rhs.den);
+		return new Rational(
+			lhs.impl.num * rhs.impl.num,
+			lhs.impl.den * rhs.impl.den
+		);
 
 	@:op(A / B)
 	public static function div(lhs : Rational, rhs : Rational) : Rational
-		return new Rational(lhs.num * rhs.den, lhs.den * rhs.num);
+		return new Rational(
+			lhs.impl.num * rhs.impl.den,
+			lhs.impl.den * rhs.impl.num
+		);
 
 	@:op(-A)
 	public static function neg(lhs : Rational) : Rational
-		return new Rational(-lhs.num, lhs.den);
+		return new Rational(-lhs.impl.num, lhs.impl.den);
 
 	// BOOLEAN COMPARISONS
 	@:op(A == B)
 	public static function eq(lhs : Rational, rhs : Rational) : Bool {
 		// Rational is guaranteed to be unique after reduce
 		// so simply compare parts
-		return lhs.num == rhs.num && lhs.den == rhs.den;
+		return lhs.impl.num == rhs.impl.num && lhs.impl.den == rhs.impl.den;
 	}
 
 	@:op(A != B)
 	public static inline function ne(lhs : Rational, rhs : Rational) : Bool
-		return lhs.num != rhs.num || lhs.den != rhs.den;
+		return lhs.impl.num != rhs.impl.num || lhs.impl.den != rhs.impl.den;
 
 	@:op(A < B)
 	public static function lt(lhs : Rational, rhs : Rational) : Bool {
 		// denominator is always positive, so no need to worry about sign flippage
-		return (lhs.num * rhs.den) < (rhs.num * lhs.den);
+		return (lhs.impl.num * rhs.impl.den) < (rhs.impl.num * lhs.impl.den);
 	}
 
 	@:op(A <= B)
 	public static function lte(lhs : Rational, rhs : Rational) : Bool
-		return (lhs.num * rhs.den) <= (rhs.num * lhs.den);
+		return (lhs.impl.num * rhs.impl.den) <= (rhs.impl.num * lhs.impl.den);
 
 	@:op(A > B)
 	public static function gt(lhs : Rational, rhs : Rational) : Bool
-		return (lhs.num * rhs.den) > (rhs.num * lhs.den);
+		return (lhs.impl.num * rhs.impl.den) > (rhs.impl.num * lhs.impl.den);
 
 	@:op(A >= B)
 	public static function gte(lhs : Rational, rhs : Rational) : Bool
-		return (lhs.num * rhs.den) >= (rhs.num * lhs.den);
+		return (lhs.impl.num * rhs.impl.den) >= (rhs.impl.num * lhs.impl.den);
 
 	// INTEGER BOOLEAN COMPARISONS
 	@:op(A == B) @:commutative
 	public static function eqInt(lhs : Rational, rhs : Int) : Bool
-		return lhs.num == lhs.den * rhs;
+		return lhs.impl.num == lhs.impl.den * rhs;
 
 	@:op(A != B) @:commutative
 	public static function neInt(lhs : Rational, rhs : Int) : Bool
-		return lhs.num != lhs.den * rhs;
+		return lhs.impl.num != lhs.impl.den * rhs;
 
 	@:op(A < B) @:commutative
 	public static function ltInt(lhs : Rational, rhs : Int) : Bool
-		return lhs.num < lhs.den * rhs;
+		return lhs.impl.num < lhs.impl.den * rhs;
 
 	@:op(A <= B) @:commutative
 	public static function lteInt(lhs : Rational, rhs : Int) : Bool
-		return lhs.num <= lhs.den * rhs;
+		return lhs.impl.num <= lhs.impl.den * rhs;
 
 	@:op(A > B) @:commutative
 	public static function gtInt(lhs : Rational, rhs : Int) : Bool
-		return lhs.num > lhs.den * rhs;
+		return lhs.impl.num > lhs.impl.den * rhs;
 
 	@:op(A >= B) @:commutative
 	public static function gteInt(lhs : Rational, rhs : Int) : Bool
-		return lhs.num >= lhs.den * rhs;
+		return lhs.impl.num >= lhs.impl.den * rhs;
 }
 
 private typedef _Rational = {

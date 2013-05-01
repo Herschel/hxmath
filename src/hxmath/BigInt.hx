@@ -6,6 +6,9 @@ abstract BigInt(_BigInt) {
 	static inline var CHUNK_MASK : Int = (1 << BITS_PER_CHUNK) - 1;
 	static inline var CHUNK_MAX_FLOAT : Float = (1 << (BITS_PER_CHUNK-1)) * 2.0;
 
+	var impl(get, never) : _BigInt;
+	inline function get_impl() return this;
+	
 	inline function new() : BigInt
 		this = alloc();
 
@@ -18,16 +21,16 @@ abstract BigInt(_BigInt) {
 	public static function ofInt(n : Int) : BigInt {
 		var bn = new BigInt();
 		if (n < 0) {
-			bn.signum = -1;
+			bn.impl.signum = -1;
 			n = -n;
 		} else if (n > 0) {
-			bn.signum = 1;
+			bn.impl.signum = 1;
 		} else {
 			return bn;
 		}
 		
 		while(n != 0) {
-			bn.chunks.push(n & CHUNK_MASK);
+			bn.impl.chunks.push(n & CHUNK_MASK);
 			n >>>= BITS_PER_CHUNK;
 		}
 
@@ -38,15 +41,15 @@ abstract BigInt(_BigInt) {
 		var bn = new BigInt();
 
 		if (n < 0) {
-			bn.signum = -1;
+			bn.impl.signum = -1;
 			n = -n;
 		} else if (n > 0) {
-			bn.signum = 1;
+			bn.impl.signum = 1;
 		}
 
 		n = Math.ffloor(n);
 		while(n != 0) {
-			bn.chunks.push( Std.int(n % CHUNK_MAX_FLOAT) );
+			bn.impl.chunks.push( Std.int(n % CHUNK_MAX_FLOAT) );
 			n = Math.ffloor( n / CHUNK_MAX_FLOAT );
 		}
 
@@ -91,10 +94,10 @@ abstract BigInt(_BigInt) {
 	public static function eq(lhs : BigInt, rhs : BigInt) : Bool {
 		// the _BigInt representation is guaranteed to be unique,
 		// so we can just compare the guts for equality
-		if(lhs.signum != rhs.signum) return false;
-		if(lhs.chunks.length != rhs.chunks.length) return false;
-		for(i in 0...lhs.chunks.length) {
-			if(lhs.chunks[i] != rhs.chunks[i]) return false;
+		if(lhs.impl.signum != rhs.impl.signum) return false;
+		if(lhs.impl.chunks.length != rhs.impl.chunks.length) return false;
+		for(i in 0...lhs.impl.chunks.length) {
+			if(lhs.impl.chunks[i] != rhs.impl.chunks[i]) return false;
 		}
 
 		return true;
@@ -115,14 +118,14 @@ abstract BigInt(_BigInt) {
 	// BASIC ARITHMETIC
 	@:op(A + B)
 	public static function add(lhs : BigInt, rhs : BigInt) : BigInt {
-		if (lhs.signum == 0) return rhs;
-		if (rhs.signum == 0) return lhs;
+		if (lhs.impl.signum == 0) return rhs;
+		if (rhs.impl.signum == 0) return lhs;
 		if (_compareMagnitude(lhs, rhs) == 1) {
 			var temp = lhs;
 			lhs = rhs;
 			rhs = temp;
 		}
-		if (lhs.signum == rhs.signum) return _add(lhs, rhs);
+		if (lhs.impl.signum == rhs.impl.signum) return _add(lhs, rhs);
 		else return _sub(lhs, rhs);
 	}
 
@@ -131,12 +134,12 @@ abstract BigInt(_BigInt) {
 		return new BigInt(); // TODO
 
 	static function _compareMagnitude(a : BigInt, b : BigInt) : Int {
-		if (a.chunks.length > b.chunks.length) return -1;
-		if (a.chunks.length < b.chunks.length) return 1;
-		var i = a.chunks.length;
+		if (a.impl.chunks.length > b.impl.chunks.length) return -1;
+		if (a.impl.chunks.length < b.impl.chunks.length) return 1;
+		var i = a.impl.chunks.length;
 		while (i >= 0) {
-			if(a.chunks[i] > b.chunks[i]) return -1;
-			if(a.chunks[i] < b.chunks[i]) return 1;
+			if(a.impl.chunks[i] > b.impl.chunks[i]) return -1;
+			if(a.impl.chunks[i] < b.impl.chunks[i]) return 1;
 			i--;
 		}
 		return 0;
@@ -146,20 +149,20 @@ abstract BigInt(_BigInt) {
 		var out = new BigInt();
 
 		var carry = 0;
-		for(i in 0...big.chunks.length) {
-			var sum = big.chunks[i] + small.chunks[i] + carry;
+		for(i in 0...big.impl.chunks.length) {
+			var sum = big.impl.chunks[i] + small.impl.chunks[i] + carry;
 			carry = sum >>> BITS_PER_CHUNK;
 			sum &= CHUNK_MASK;
-			out.chunks.push(sum);
+			out.impl.chunks.push(sum);
 		}
-		for(i in big.chunks.length...small.chunks.length) {
-			var sum = big.chunks[i] + carry;
+		for(i in big.impl.chunks.length...small.impl.chunks.length) {
+			var sum = big.impl.chunks[i] + carry;
 			carry = sum >>> BITS_PER_CHUNK;
 			sum &= CHUNK_MASK;
-			out.chunks.push(sum);
+			out.impl.chunks.push(sum);
 		}
-		if (carry == 1) out.chunks.push(1);
-		out.signum = big.signum;
+		if (carry == 1) out.impl.chunks.push(1);
+		out.impl.signum = big.impl.signum;
 
 		return out;
 	}
@@ -168,20 +171,20 @@ abstract BigInt(_BigInt) {
 		var out = new BigInt();
 
 		var borrow = 0;
-		for(i in 0...big.chunks.length) {
-			var diff = big.chunks[i] - small.chunks[i] - borrow;
+		for(i in 0...big.impl.chunks.length) {
+			var diff = big.impl.chunks[i] - small.impl.chunks[i] - borrow;
 			borrow = diff >>> BITS_PER_CHUNK;
 			diff &= CHUNK_MASK;
-			out.chunks.push(diff);
+			out.impl.chunks.push(diff);
 		}
-		for(i in big.chunks.length...small.chunks.length) {
-			var diff = big.chunks[i] - borrow;
+		for(i in big.impl.chunks.length...small.impl.chunks.length) {
+			var diff = big.impl.chunks[i] - borrow;
 			borrow = diff >>> BITS_PER_CHUNK;
 			diff &= CHUNK_MASK;
-			out.chunks.push(diff);
+			out.impl.chunks.push(diff);
 		}
-		if (borrow == 1) out.chunks.push(1);
-		out.signum = big.signum;
+		if (borrow == 1) out.impl.chunks.push(1);
+		out.impl.signum = big.impl.signum;
 
 		return out;
 	}
@@ -197,8 +200,8 @@ abstract BigInt(_BigInt) {
 	@:op(-A)
 	public static inline function neg(n : BigInt) : BigInt {
 		var out : BigInt = new BigInt();
-		out.chunks = n.chunks;
-		out.signum = -n.signum;
+		out.impl.chunks = n.impl.chunks;
+		out.impl.signum = -n.impl.signum;
 		return out;
 	}
 }
