@@ -179,10 +179,10 @@ class BigIntTest
 		Assert.isTrue(a*b == m);
 		Assert.isTrue(b*a == m);
 
-		a = -11; b = 9; m = -99;
+		a = -11; b = -9; m = 99;
 		Assert.isTrue(a*b == m);
 
-		a = 55; b = -2; m = -110;
+		a = 55; b = 200395; m = 11021725;
 		Assert.isTrue(a*b == m);
 
 		a = BigInt.ofString("111111111111111111111111111111111111111");
