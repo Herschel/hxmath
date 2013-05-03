@@ -5,6 +5,8 @@ abstract BigInt(_BigInt) {
 	static inline var BITS_PER_CHUNK : Int = 30;
 	static inline var CHUNK_MASK : Int = (1 << BITS_PER_CHUNK) - 1;
 	static inline var CHUNK_MAX_FLOAT : Float = (1 << (BITS_PER_CHUNK-1)) * 2.0;
+	static inline var MUL_BITS : Int = Std.int(BITS_PER_CHUNK / 2);
+	static inline var MUL_MASK : Int = (1 << MUL_BITS) - 1;
 
 	var impl(get, never) : _BigInt;
 	inline function get_impl() return this;
@@ -189,9 +191,66 @@ abstract BigInt(_BigInt) {
 		return out;
 	}
 
+	public static inline function mul2(lhs : BigInt, rhs : BigInt) : BigInt {
+		var outChunks = new Array();
+		var product;
+		var carry = 0;
+		for(i in 0...lhs.impl.chunks.length+rhs.impl.chunks.length) outChunks[i] = 0;
+		for(j in 0...rhs.impl.chunks.length) {
+			for(i in 0...lhs.impl.chunks.length) {
+				product = outChunks[i+j] + lhs.impl.chunks[i] * rhs.impl.chunks[j] + carry;
+				outChunks[i+j] = product & CHUNK_MASK;
+				carry = product >>> BITS_PER_CHUNK;
+			}
+			outChunks[j+lhs.impl.chunks.length] = carry;
+		}
+
+		var n = new BigInt();
+		var i = outChunks.length - 1;
+		while(i >= 0 && outChunks[i] == 0) i--;
+		n.impl.chunks = outChunks.slice(0, i+1);
+		n.impl.signum = lhs.impl.signum * rhs.impl.signum;
+		return n;
+	}
+
 	@:op(A * B)
-	public static inline function mul(lhs : BigInt, rhs : BigInt) : BigInt
-		return new BigInt(); // TODO
+	public static function mul(lhs : BigInt, rhs : BigInt) : BigInt {
+		var outChunks = new Array();
+		var product;
+		var carry = 0;
+
+		for (i in 0...lhs.impl.chunks.length + rhs.impl.chunks.length)
+			outChunks[i] = 0;
+
+		for (j in 0...rhs.impl.chunks.length) {
+			for(i in 0...lhs.impl.chunks.length) {
+				var rLow = rhs.impl.chunks[i] & MUL_MASK;
+				var rHigh = rhs.impl.chunks[i] >>> MUL_BITS;
+				var lLow = lhs.impl.chunks[j] & MUL_MASK;
+				var lHigh = lhs.impl.chunks[j] >>> MUL_BITS;
+				var p00 = rLow * lLow;
+				var p01 = rLow * lHigh;
+				var p10 = rHigh * lLow;
+				var p11 = rHigh * lHigh;
+				trace('$rHigh $rLow  $lHigh $lLow');
+				trace('$p00 $p01 $p10 $p11');
+				var productLow = ((p01 & MUL_MASK) << MUL_BITS) + ((p10 & MUL_MASK) << MUL_BITS) + p00;
+				productLow += outChunks[i+j] + carry;
+				var productHigh = p11 + (p01 >>> MUL_BITS) + (p10 >>> MUL_BITS);
+				productHigh += productLow >>> BITS_PER_CHUNK;
+				productLow &= CHUNK_MASK;
+				outChunks[i+j] = productLow;
+				carry = productHigh;
+			}
+			outChunks[j+lhs.impl.chunks.length] = carry;
+		}
+
+		var n = new BigInt();
+		n.impl.chunks = outChunks;
+		n.impl.signum = lhs.impl.signum * rhs.impl.signum;
+		n.trimLeadingZeroes();
+		return n;
+	}
 
 	@:op(A / B)
 	public static inline function div(lhs : BigInt, rhs : BigInt) : BigInt
@@ -203,6 +262,11 @@ abstract BigInt(_BigInt) {
 		out.impl.chunks = n.impl.chunks;
 		out.impl.signum = -n.impl.signum;
 		return out;
+	}
+
+	function trimLeadingZeroes() {
+		while (this.chunks[this.chunks.length - 1] == 0)
+			this.chunks.pop();
 	}
 }
 
